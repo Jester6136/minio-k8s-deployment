@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv-slave01-disk1
+spec:
+  capacity:
+    storage: 100Gi # Phải khớp với yêu cầu trong tenant.yaml
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain # Giữ dữ liệu lại nếu PVC bị xóa
+  storageClassName: minio-local-storage # Phải khớp với tên StorageClass bạn đã tạo
+  local:
+    path: /mnt/minio-disks/disk1 # Đường dẫn tới thư mục trên node
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - slave01 # Tên node, phải khớp chính xác
+
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: minio-pv-slave01-disk2
+spec:
+  capacity:
+    storage: 100Gi # Phải khớp với yêu cầu trong tenant.yaml
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain # Giữ dữ liệu lại nếu PVC bị xóa
+  storageClassName: minio-local-storage # Phải khớp với tên StorageClass bạn đã tạo
+  local:
+    path: /mnt/minio-disks/disk2 # Đường dẫn tới thư mục trên node
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: kubernetes.io/hostname
+              operator: In
+              values:
+                - slave01 # Tên node, phải khớp chính xác
