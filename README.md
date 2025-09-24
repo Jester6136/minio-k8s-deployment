@@ -1,4 +1,9 @@
-# Setup
+# Setup MinIO Deployment on Kubernetes (Operator v7.1.1+)
+## ⚠️ Requirements
+    - Kubernetes v1.30.0+
+    - kubectl installed and configured
+    - Sudo/root access on cluster nodes
+    - Pre-created directories on worker nodes for persistent storage
 
 ## step 1 - Install the MinIO Operator via Kustomization:
 ```
@@ -77,9 +82,12 @@ kubectl port-forward svc/myminio-console -n minio-tenant 9443:9443
 ```
 
 ## Truy cập S3 API
+```
 kubectl port-forward svc/minio -n minio-tenant 9000:443
-
+```
 
 ## NodePort để expose port
+```
 kubectl apply -f 'base/node-port/minio-console-nodeport.yaml'
 kubectl apply -f 'base/node-port/minio-nodeport.yaml'
+```
