@@ -50,7 +50,7 @@ spec:
   podManagementPolicy: Parallel
   ## Secret with credentials and configurations to be used by MinIO Tenant.
   configuration:
-    name: storage-configuration
+    name: storage-configuration-v2
   ## Add environment variables to be set in MinIO container (https://github.com/minio/minio/tree/master/docs/config)
   env: [ ]
   ## serviceMetadata allows passing additional labels and annotations to MinIO and Console specific
@@ -197,7 +197,7 @@ spec:
             - ReadWriteOnce
           resources:
             requests:
-              storage: 100Gi
+              storage: 200Gi
           storageClassName: minio-local-storage
         status: { }
       ## Configure Pod's security context

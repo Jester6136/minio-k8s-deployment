@@ -4,7 +4,7 @@ metadata:
   name: minio-pv-slave01-disk1
 spec:
   capacity:
-    storage: 100Gi # Phải khớp với yêu cầu trong tenant.yaml
+    storage: 200Gi # Phải khớp với yêu cầu trong tenant.yaml
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce
@@ -28,7 +28,7 @@ metadata:
   name: minio-pv-slave01-disk2
 spec:
   capacity:
-    storage: 100Gi # Phải khớp với yêu cầu trong tenant.yaml
+    storage: 200Gi # Phải khớp với yêu cầu trong tenant.yaml
   volumeMode: Filesystem
   accessModes:
     - ReadWriteOnce

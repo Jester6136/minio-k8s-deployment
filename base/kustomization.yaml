@@ -5,9 +5,9 @@ namespace: minio-tenant
 
 resources:
 - namespace.yaml
-- tenant-config.yaml
 - minio-local-storageclass.yaml
 - pv-slave01.yaml
 - pv-slave02.yaml
 - storage-user.yaml
+- storage-configuration-v2.yaml
 - tenant.yaml
