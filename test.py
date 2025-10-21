@@ -1,23 +1,9 @@
-from kafka import KafkaConsumer
-import json
+from kafka import KafkaProducer
 
-# ⚙️ Thay đổi nếu bạn expose Kafka ra NodePort
-KAFKA_BROKER = "localhost:32004"   # hoặc "kafka.kafka.svc.cluster.local:9092" nếu chạy trong cluster
-TOPIC = "minio-events"
+# Thay IP bên dưới bằng IP node của bạn
+producer = KafkaProducer(bootstrap_servers='14.224.231.82:32004')
 
-# Tạo consumer
-consumer = KafkaConsumer(
-    TOPIC,
-    bootstrap_servers=[KAFKA_BROKER],
-    auto_offset_reset='earliest',
-    enable_auto_commit=True,
-    group_id='minio-event-listener',
-    value_deserializer=lambda m: json.loads(m.decode('utf-8'))
-)
-
-print(f"🚀 Listening for MinIO events on topic '{TOPIC}' ...")
-
-for message in consumer:
-    event = message.value
-    print("📦 Received event:")
-    print(json.dumps(event, indent=2))
+# Gửi thử một message
+producer.send('test-topic', b'Hello from Python!')
+producer.flush()
+print("✅ Message sent!")

@@ -13,7 +13,7 @@ stringData:
 
     # ---- Kafka Notification Configuration ----
     notify_kafka:1
-      brokers="kafka.kafka.svc.cluster.local:9092"
+      brokers="localhost:32004"
       topic="minio-events"
       queue_dir="/tmp/minio-events"
       queue_limit="10000"

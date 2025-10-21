@@ -1,0 +1,16 @@
+# Thêm Service nội bộ cho Kafka
+apiVersion: v1
+kind: Service
+metadata:
+  name: kafka-service
+  namespace: kafka-namespace
+  labels:
+    app: kafka
+spec:
+  selector:
+    app: kafka
+  ports:
+  - name: plaintext
+    port: 9092
+    targetPort: 9092
+  type: ClusterIP

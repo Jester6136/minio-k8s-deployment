@@ -30,19 +30,23 @@ spec:
         - name: KAFKA_LISTENERS
           value: "PLAINTEXT://0.0.0.0:9092,EXTERNAL://0.0.0.0:32004"
         - name: KAFKA_ADVERTISED_LISTENERS
-          value: "PLAINTEXT://kafka-service:9092,EXTERNAL://kafka-external:32004"
+          value: "PLAINTEXT://kafka-service.kafka-namespace.svc.cluster.local:9092,EXTERNAL://14.224.231.82:32004"
         - name: KAFKA_LISTENER_SECURITY_PROTOCOL_MAP
           value: "PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT"
         - name: KAFKA_INTER_BROKER_LISTENER_NAME
           value: "PLAINTEXT"
         - name: KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR
           value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR
+          value: "1"
+        - name: KAFKA_TRANSACTION_STATE_LOG_MIN_ISR
+          value: "1"
         - name: KAFKA_AUTO_CREATE_TOPICS_ENABLE
           value: "true"
-        resources:
-          requests:
-            memory: "1Gi"
-            cpu: "500m"
-          limits:
-            memory: "2Gi"
-            cpu: "1000m"
+      resources:
+        requests:
+          memory: "1Gi"
+          cpu: "500m"
+        limits:
+          memory: "2Gi"
+          cpu: "1000m"

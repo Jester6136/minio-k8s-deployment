@@ -7,5 +7,6 @@ resources:
 - namespace.yaml
 - zookeeper.yaml
 - kafka.yaml
+- kafka-service.yaml
 - kafka-external.yaml
 - kafka-topics.yaml
