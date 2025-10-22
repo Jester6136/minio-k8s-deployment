@@ -4,6 +4,6 @@ from kafka import KafkaProducer
 producer = KafkaProducer(bootstrap_servers='14.224.231.82:32004')
 
 # Gửi thử một message
-producer.send('test-topic', b'Hello from Python!')
+producer.send('test-topic', b'HCLM<sadsads')
 producer.flush()
 print("✅ Message sent!")

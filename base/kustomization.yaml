@@ -9,5 +9,5 @@ resources:
 - pv-slave01.yaml
 - pv-slave02.yaml
 - storage-user.yaml
-- storage-configuration-v2.yaml
+- storage-configuration-v3.yaml
 - tenant.yaml
