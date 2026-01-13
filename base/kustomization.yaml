@@ -11,3 +11,6 @@ resources:
 - storage-user.yaml
 - storage-configuration-v3.yaml
 - tenant.yaml
+- ingress/minio-ingress.yaml
+# - node-port/minio-console-nodeport.yaml
+# - node-port/minio-nodeport.yaml

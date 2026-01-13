@@ -1,0 +1,37 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minio-ingress
+  namespace: minio-tenant
+  annotations:
+    # nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+    nginx.ingress.kubernetes.io/proxy-body-size: "1g"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - storage.aiacademy.edu.vn
+        - api-storage.aiacademy.edu.vn
+      secretName: server
+  rules:
+    - host: api-storage.aiacademy.edu.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myminio-hl
+                port:
+                  number: 9000
+    - host: storage.aiacademy.edu.vn
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: myminio-console
+                port:
+                  number: 9443

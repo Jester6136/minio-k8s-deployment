@@ -19,7 +19,7 @@ spec:
   podManagementPolicy: Parallel
   configuration:
     name: storage-configuration-v3
-  env: [ ]
+  env: []
   serviceMetadata:
     minioServiceLabels: { }
     minioServiceAnnotations: { }

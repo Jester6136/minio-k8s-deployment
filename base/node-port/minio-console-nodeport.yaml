@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: minio-console-nodeport
+  name: minio-console-nodeport-http
   namespace: minio-tenant
 spec:
   type: NodePort
@@ -9,6 +9,10 @@ spec:
     v1.min.io/tenant: myminio  # <- label của pod, cần đúng với tenant
   ports:
     - name: api
+      port: 9000       # cổng trong cluster
+      targetPort: 9000 # container port
+      nodePort: 32003
+    - name: console
       port: 9443       # cổng trong cluster
       targetPort: 9443 # container port
       nodePort: 32002
