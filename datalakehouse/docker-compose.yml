@@ -2,20 +2,21 @@ version: "3.9"
 
 services:
   nessie:
-    image: projectnessie/nessie:0.76.6
+    image: ghcr.io/projectnessie/nessie:0.106.1-java
     container_name: nessie
     ports:
-      - "19120:19120"
+      - "32010:19120"
     volumes:
       - ./nessie-data:/data
     environment:
       NESSIE_VERSION_STORE_TYPE: ROCKSDB
+      QUARKUS_HTTP_ROOT_PATH: /api/v1
 
   trino:
     image: trinodb/trino:479
     container_name: trino
     ports:
-      - "8080:8080"
+      - "32007:8080"
     volumes:
       - ./trino/catalog:/etc/trino/catalog
     depends_on:
@@ -30,7 +31,7 @@ services:
     volumes:
       - ./spark:/opt/spark/conf
     ports:
-      - "7077:7077"
-      - "8081:8080"
+      - "32008:7077"
+      - "32009:8080"
     depends_on:
       - nessie
