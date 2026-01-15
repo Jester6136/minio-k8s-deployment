@@ -1,3 +1,9 @@
+Below is a **clean, concise, end-to-end** of the **working Lakehouse setup** using your **existing external MinIO**, with **Iceberg + Nessie + Trino + Spark**, **no Bitnami**, **100% free & official images**.
+
+---
+
+# ✅ Final Lakehouse Solution
+
 ## Architecture
 
 ```
@@ -9,8 +15,8 @@ Trino ─┘              ↓
 
 MinIO endpoints (already running):
 
-* S3 API: `https://api-storage.aiacademy.edu.vn  `
-* Console: `https://storage.aiacademy.edu.vn  `
+* S3 API: `https://api-storage.aiacademy.edu.vn      `
+* Console: `https://storage.aiacademy.edu.vn      `
 * Bucket: `warehouse`
 
 ---
@@ -29,23 +35,23 @@ datalakehouse/
 
 ---
 
-## 2️⃣ Docker Compose
+## 2️⃣ Docker Composervices:
+```
+  version: "3.9"
 
-📄 `docker-compose.yml`
-
-```yaml
 services:
-
   nessie:
-    image: projectnessie/nessie:latest
+    image: projectnessie/nessie:0.76.6
     container_name: nessie
     ports:
       - "19120:19120"
+    volumes:
+      - ./nessie-data:/data
     environment:
-      NESSIE_VERSION_STORE_TYPE: INMEMORY
+      NESSIE_VERSION_STORE_TYPE: ROCKSDB
 
   trino:
-    image: trinodb/trino:latest
+    image: trinodb/trino:479
     container_name: trino
     ports:
       - "8080:8080"
@@ -55,7 +61,7 @@ services:
       - nessie
 
   spark:
-    image: apache/spark:3.5.0
+    image: apache/spark:4.1.1
     container_name: spark
     command: >
       /opt/spark/bin/spark-class
@@ -71,16 +77,10 @@ services:
 
 ---
 
-## 3️⃣ Spark Configuration (Iceberg + Nessie + MinIO)
-
-📄 `spark/spark-defaults.conf`
-
-```properties
+## 3️⃣ Spark Configurspark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
+> spark-defaults.conf
+```
 spark.sql.extensions=org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions
-
-spark.jars.packages=\
-org.apache.iceberg:iceberg-spark-runtime-3.5_2.12:1.5.2,\
-org.projectnessie:nessie-spark-extensions-3.5_2.12:0.84.0
 
 spark.sql.catalog.nessie=org.apache.iceberg.spark.SparkCatalog
 spark.sql.catalog.nessie.catalog-impl=org.apache.iceberg.nessie.NessieCatalog
@@ -89,33 +89,26 @@ spark.sql.catalog.nessie.ref=main
 spark.sql.catalog.nessie.warehouse=s3://warehouse/
 spark.sql.catalog.nessie.io-impl=org.apache.iceberg.aws.s3.S3FileIO
 
-spark.hadoop.fs.s3a.endpoint=https://api-storage.aiacademy.edu.vn  
-spark.hadoop.fs.s3a.access.key=YOUR_ACCESS_KEY
-spark.hadoop.fs.s3a.secret.key=YOUR_SECRET_KEY
+spark.hadoop.fs.s3a.endpoint=https://api-storage.aiacademy.edu.vn
+spark.hadoop.fs.s3a.access.key=admin
+spark.hadoop.fs.s3a.secret.key=4d494e494f5f524f4f545f50415353574f5244
 spark.hadoop.fs.s3a.path.style.access=true
 spark.hadoop.fs.s3a.connection.ssl.enabled=true
 ```
 
----
-
-## 4️⃣ Trino Iceberg Catalog
-
-📄 `trino/catalog/iceberg.properties`
-
-```properties
-connector.name=iceberg
-
+> iceberg.properties
+```
 iceberg.catalog.type=rest
 iceberg.rest-catalog.uri=http://nessie:19120/api/v1
-iceberg.rest-catalog.ref=main
+
 iceberg.rest-catalog.warehouse=s3://warehouse/
 
 fs.native-s3.enabled=true
-s3.endpoint=https://api-storage.aiacademy.edu.vn  
-s3.aws-access-key=YOUR_ACCESS_KEY
-s3.aws-secret-key=YOUR_SECRET_KEY
+s3.endpoint=https://api-storage.aiacademy.edu.vn
 s3.path-style-access=true
-s3.ssl.enabled=true
+s3.aws-access-key=admin
+s3.aws-secret-key=4d494e494f5f524f4f545f50415353574f5244
+s3.region=us-east-1
 ```
 
 ---
@@ -164,11 +157,3 @@ warehouse/demo/users/
 ```
 
 ---
-
-## ✅ Key Design Decisions
-
-* ❌ Bitnami Spark removed (commercial)
-* ✅ Apache official Spark image
-* ✅ External MinIO (production-grade)
-* ✅ Nessie REST catalog (Git-like Iceberg)
-* ✅ Iceberg shared by Spark & Trino
